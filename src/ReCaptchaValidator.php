@@ -65,6 +65,12 @@ class ReCaptchaValidator extends Validator
     private string $secretKey;
 
     /**
+     * Hostname
+     * @var string
+     */
+    public string $hostname;
+
+    /**
      * Checks necessary configuration for initialization
      * @throws InvalidConfigException
      */
@@ -142,7 +148,11 @@ class ReCaptchaValidator extends Validator
             return false;
         }
 
-        $currentHost = Yii::$app->request->hostName;
+        if($this->hostname)
+            $currentHost = $this->hostname;
+        else
+            $currentHost = Yii::$app->request->hostName;
+
         $data = $response->data;
 
         if ($data['success'] && $data['hostname'] == $currentHost) {
